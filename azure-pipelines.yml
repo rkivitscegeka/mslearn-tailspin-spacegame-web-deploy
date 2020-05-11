@@ -130,6 +130,7 @@ stages:
 - stage: 'Staging'
   displayName: 'Deploy to the staging environment'
   dependsOn: Test
+  #Condition: approval configured in Environment staging 
   jobs:
   - deployment: Deploy
     pool:
