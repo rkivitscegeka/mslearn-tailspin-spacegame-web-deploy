@@ -1,0 +1,2 @@
+# local run The -n argument specifies to run JMeter in non-GUI mode. -t testplan file -o output file
+C:\dev\apache-jmeter-5.2.1\bin\jmeter.bat -n  -t LoadTest.jmx -o Results.xml
