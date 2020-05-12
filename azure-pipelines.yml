@@ -133,6 +133,8 @@ stages:
                 Get-Content d:\a\1\s\GeneratedOutputFiles\$(databasename)_Script.sql | foreach {Write-Output $_}
           - task: PowerShell@2
             displayName: Show change script and check for schema changes
+            # This script sets a global variable. It is not scoped to a single pipeline run! 
+            # Therefore you need to remove it before the end of the pipeline run
             inputs:
               targetType: 'inline'
               script: | 
@@ -200,6 +202,7 @@ stages:
               ipDetectionMethod: 'AutoDetect'
           - task: PowerShell@2
             displayName: 'Remove "schemaChanged" pipeline variable'
+            # This is needed because schemahanged is a global pipeline variable, not scoped to a pipeline RUN!
             inputs:
               targetType: 'inline'
               script: | 
