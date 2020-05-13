@@ -1,0 +1,47 @@
+webappsuffix=$RANDOM
+
+az appservice plan create \
+  --name tailspin-space-game-asp \
+  --resource-group mslearn-database-rg \
+  --sku B1
+
+az webapp create \
+  --name tailspin-space-game-web-dev-$webappsuffix \
+  --resource-group mslearn-database-rg \
+  --plan tailspin-space-game-asp
+
+az webapp create \
+  --name tailspin-space-game-web-test-$webappsuffix \
+  --resource-group mslearn-database-rg \
+  --plan tailspin-space-game-asp
+
+az webapp create \
+  --name tailspin-space-game-web-staging-$webappsuffix \
+  --resource-group mslearn-database-rg \
+  --plan tailspin-space-game-asp
+
+  az webapp list \
+  --resource-group mslearn-database-rg \
+  --query "[].{hostName: defaultHostName, state: state}" \
+  --output table
+
+DB_CONNECTION_STRING='Server=tcp:tailspin-space-game-sql-972.database.windows.net,1433;Initial Catalog=tailspindatabase;Persist Security Info=False;User ID=azuresql;Password=Testing123!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
+
+az webapp config connection-string set \
+  --name tailspin-space-game-web-dev-$webappsuffix \
+  --resource-group mslearn-database-rg \
+  --settings "DefaultConnection=$DB_CONNECTION_STRING" \
+  --connection-string-type SQLAzure
+
+az webapp config connection-string set \
+  --name tailspin-space-game-web-test-$webappsuffix \
+  --resource-group mslearn-database-rg \
+  --settings "DefaultConnection=$DB_CONNECTION_STRING" \
+  --connection-string-type SQLAzure
+
+az webapp config connection-string set \
+  --name tailspin-space-game-web-staging-$webappsuffix \
+  --resource-group mslearn-database-rg \
+  --settings "DefaultConnection=$DB_CONNECTION_STRING" \
+  --connection-string-type SQLAzure
+
